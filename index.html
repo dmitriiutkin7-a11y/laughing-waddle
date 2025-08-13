@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Учебная игра</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #f0f8ff;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 500px;
+        margin: auto;
+        padding: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        margin: 10px;
+        border: none;
+        border-radius: 8px;
+        background: #4caf50;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #45a049;
+    }
+</style>
+</head>
+<body>
+
+<div class="container" id="menu">
+    <h1>Добро пожаловать!</h1>
+    <p>Выбери задание и начни игру</p>
+    <button onclick="startGame()">Начать игру</button>
+</div>
+
+<div class="container" id="game" style="display:none;">
+    <h2>Исправь ошибку</h2>
+    <p id="question">Я люблю кататься на лыжах летом.</p>
+    <button onclick="checkAnswer(true)">Зимой</button>
+    <button onclick="checkAnswer(false)">Летом</button>
+    <p id="result"></p>
+    <button onclick="backToMenu()">Вернуться в меню</button>
+</div>
+
+<script>
+function startGame() {
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('game').style.display = 'block';
+}
+
+function checkAnswer(isCorrect) {
+    let result = document.getElementById('result');
+    if (isCorrect) {
+        result.innerHTML = "✅ Верно! Молодец!";
+        result.style.color = "green";
+    } else {
+        result.innerHTML = "❌ Неправильно. Подумай ещё!";
+        result.style.color = "red";
+    }
+}
+
+function backToMenu() {
+    document.getElementById('game').style.display = 'none';
+    document.getElementById('menu').style.display = 'block';
+}
+</script>
+
+</body>
+</html>
