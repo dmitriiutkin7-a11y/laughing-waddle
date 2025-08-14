@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Исправь ошибку</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        text-align: center;
+        padding: 20px;
+    }
+    h1 {
+        color: #1976d2;
+    }
+    p {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    .word {
+        display: inline-block;
+        margin: 5px;
+        padding: 5px 8px;
+        background: white;
+        border: 2px solid #64b5f6;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .word:hover {
+        background: #e3f2fd;
+        transform: scale(1.05);
+    }
+    .correct {
+        background: lightgreen !important;
+        border-color: green;
+        cursor: default;
+    }
+    #message {
+        font-size: 22px;
+        margin-top: 20px;
+        font-weight: bold;
+        color: green;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+    }
+    #restartBtn {
+        display: none;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+    #restartBtn:hover {
+        background: #388e3c;
+        transform: scale(1.05);
+    }
+</style>
+</head>
+<body>
+
+<h1>Исправь ошибки</h1>
+<p>Нажми на слово с ошибкой и исправь его</p>
+<div id="text"></div>
+<div id="message"></div>
+<button id="restartBtn" onclick="goToMenu()">Вернуться в меню</button>
+<button id="restartBtn" style="display:none;" onclick="goToMenu()">Вернуться в меню</button>
+
+<script>
+    const originalText = "Я люблю писат на компьютере и играт в игры";
+    const correctWords = ["писать", "играть"];
+    let words = [];
+    let fixedCount = 0;
+
+    function startGame() {
+        fixedCount = 0;
+        document.getElementById("message").textContent = "";
+        document.getElementById("restartBtn").style.display = "none";
+        words = originalText.split(" ");
+        renderText();
+    }
+
+    function renderText() {
+        const container = document.getElementById("text");
+        container.innerHTML = "";
+        words.forEach((word, index) => {
+            const span = document.createElement("span");
+            span.textContent = word;
+            span.className = "word";
+            span.onclick = () => editWord(index, span);
+            container.appendChild(span);
+        });
+    }
+
+    function editWord(index, element) {
+        if (element.classList.contains("correct")) return;
+        const answer = prompt("Исправь слово:", words[index]);
+        if (answer && correctWords.includes(answer)) {
+            words[index] = answer;
+            element.textContent = answer;
+            element.classList.add("correct");
+            fixedCount++;
+            if (fixedCount === correctWords.length) {
+                document.getElementById("message").textContent = "Поздравляю! Все ошибки исправлены!";
+                document.getElementById("restartBtn").style.display = "inline-block";
+            }
+        } else if (answer) {
+            alert("Неправильно! Попробуй снова.");
+        }
+    }
+
+    function goToMenu() {
+        window.location.href = "index.html"; // Сюда поставь путь к своей главной странице
+    }
+
+    startGame();
+</script>
+<script>
+    const originalText = "Я люблю писат на компьютере и играт в игры";
+    const correctWords = ["писать", "играть"];
+    let words = [];
+    let fixedCount = 0;
+
+    function startGame() {
+        fixedCount = 0;
+        document.getElementById("message").style.opacity = "0";
+        document.getElementById("restartBtn").style.display = "none";
+        words = originalText.split(" ");
+        renderText();
+    }
+
+    function renderText() {
+        const container = document.getElementById("text");
+        container.innerHTML = "";
+        words.forEach((word, index) => {
+            const span = document.createElement("span");
+            span.textContent = word;
+            span.className = "word";
+            span.onclick = () => editWord(index, span);
+            container.appendChild(span);
+        });
+    }
+
+    function editWord(index, element) {
+        if (element.classList.contains("correct")) return;
+        const answer = prompt("Исправь слово:", words[index]);
+        if (answer && correctWords.includes(answer)) {
+            words[index] = answer;
+            element.textContent = answer;
+            element.classList.add("correct");
+            fixedCount++;
+            if (fixedCount === correctWords.length) {
+                winGame();
+            }
+        } else if (answer) {
+            alert("Неправильно! Попробуй снова.");
+        }
+    }
+
+    function winGame() {
+        const msg = document.getElementById("message");
+        msg.textContent = "🎉 Поздравляю! Все ошибки исправлены!";
+        msg.style.opacity = "1";
+
+        setTimeout(() => {
+            document.getElementById("restartBtn").style.display = "inline-block";
+        }, 800);
+    }
+
+    function goToMenu() {
+        alert("Переход в меню (тут можно сделать ссылку на главную страницу)");
+    }
+
+    startGame();
+</script>
+
+</body>
+</html>

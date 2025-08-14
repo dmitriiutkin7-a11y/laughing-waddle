@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Выразительное чтение</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f0f8ff;
+        text-align: center;
+        padding: 20px;
+    }
+    #text {
+        font-size: 20px;
+        margin: 20px auto;
+        padding: 15px;
+        border: 2px dashed #333;
+        max-width: 500px;
+        background: #fff;
+        border-radius: 10px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 18px;
+        margin: 10px;
+        cursor: pointer;
+        border: none;
+        border-radius: 8px;
+        background: #4caf50;
+        color: white;
+    }
+    button:hover {
+        background: #45a049;
+    }
+    #result {
+        font-size: 18px;
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+
+<h1>🎤 Выразительное чтение</h1>
+<div id="text"></div>
+<button id="startBtn">Начать чтение</button>
+<div id="result"></div>
+
+<script>
+    const texts = [
+        "В лесу родилась ёлочка",
+        "Солнце светит ярко",
+        "Я люблю читать книги",
+        "Ветер тихо шевелит листья",
+        "Сегодня прекрасная погода"
+    ];
+
+    let currentText = "";
+    const textDiv = document.getElementById("text");
+    const resultDiv = document.getElementById("result");
+    const startBtn = document.getElementById("startBtn");
+
+    function newText() {
+        currentText = texts[Math.floor(Math.random() * texts.length)];
+        textDiv.textContent = currentText;
+        resultDiv.textContent = "";
+    }
+
+    newText();
+
+    startBtn.onclick = () => {
+        if (!('webkitSpeechRecognition' in window)) {
+            alert("Ваш браузер не поддерживает распознавание речи");
+            return;
+        }
+
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang = "ru-RU";
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.start();
+
+        resultDiv.textContent = "🎙 Говорите...";
+
+        recognition.onresult = (event) => {
+            let said = event.results[0][0].transcript.trim();
+            if (said.toLowerCase() === currentText.toLowerCase()) {
+                resultDiv.innerHTML = "✅ Отлично! Вы прочитали правильно!";
+                setTimeout(newText, 2000);
+            } else {
+                resultDiv.innerHTML = `❌ Вы отвратительно сказали: "${said}". Попробуйте снова.`;
+            }
+        };
+
+        recognition.onerror = (e) => {
+            resultDiv.textContent = "Ошибка: " + e.error;
+        };
+    };
+</script>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Синонимайзер</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+    }
+    h1 {
+        background-color: #4CAF50;
+        color: white;
+        padding: 20px;
+        margin: 0;
+    }
+    .game-container {
+        margin-top: 40px;
+    }
+    input {
+        padding: 10px;
+        font-size: 16px;
+        width: 250px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    button {
+        padding: 10px 15px;
+        font-size: 16px;
+        margin: 10px;
+        border: none;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    #message {
+        margin-top: 20px;
+        font-size: 18px;
+        color: #333;
+    }
+    #menuButton {
+        display: none;
+        background-color: #f44336;
+    }
+</style>
+</head>
+<body>
+
+<h1>Игра: Синонимайзер</h1>
+
+<div class="game-container">
+    <p><b>Слово:</b> <span id="word"></span></p>
+    <input type="text" id="answer" placeholder="Введите синоним...">
+    <br>
+    <button onclick="checkAnswer()">Ответить</button>
+    <p id="message"></p>
+    <button id="menuButton" onclick="location.href='index.html'">На главное меню</button>
+</div>
+
+<script>
+const words = {
+    "быстрый": ["скорый", "проворный", "шустрый", "резвый"],
+    "умный": ["разумный", "мудрый", "сообразительный", "смекалистый"],
+    "красивый": ["прекрасный", "привлекательный", "очаровательный", "симпатичный"]
+};
+
+let usedSynonyms = {};
+let wordList = Object.keys(words);
+let currentRound = 0;
+let maxRounds = 3;
+
+function startGame() {
+    currentRound = 0;
+    usedSynonyms = {};
+    nextRound();
+}
+
+function nextRound() {
+    if (currentRound >= maxRounds) {
+        document.getElementById("message").textContent = "Вы прошли все раунды!";
+        document.getElementById("menuButton").style.display = "inline-block";
+        return;
+    }
+    let currentWord = wordList[currentRound];
+    document.getElementById("word").textContent = currentWord;
+    document.getElementById("answer").value = "";
+    document.getElementById("message").textContent = "";
+}
+
+function checkAnswer() {
+    let currentWord = wordList[currentRound];
+    let answer = document.getElementById("answer").value.trim().toLowerCase();
+
+    if (!usedSynonyms[currentWord]) {
+        usedSynonyms[currentWord] = [];
+    }
+
+    if (words[currentWord].includes(answer) && !usedSynonyms[currentWord].includes(answer)) {
+        usedSynonyms[currentWord].push(answer);
+        document.getElementById("message").textContent = "Правильно!";
+        currentRound++;
+        setTimeout(nextRound, 1000);
+    } else {
+        document.getElementById("message").textContent = "Неправильно или уже использовали этот синоним!";
+        document.getElementById("menuButton").style.display = "inline-block";
+    }
+}
+
+startGame();
+</script>
+
+</body>
+</html>

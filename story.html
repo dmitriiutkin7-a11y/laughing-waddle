@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Собери рассказ</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #0e0e2c;
+        color: white;
+        text-align: center;
+        padding: 20px;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    .block {
+        background-color: #1f1f4d;
+        padding: 10px;
+        border-radius: 10px;
+        cursor: grab;
+        min-width: 150px;
+    }
+    .dropzone {
+        border: 2px dashed white;
+        padding: 15px;
+        min-width: 150px;
+        min-height: 50px;
+        background-color: #1a1a3d;
+        border-radius: 10px;
+    }
+    button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        border-radius: 8px;
+        background-color: #4cafef;
+        color: white;
+    }
+    #startScreen { display: block; margin-top: 100px; }
+    #gameScreen { display: none; }
+    #homeBtn {
+        display: none;
+        padding: 15px 30px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 10px;
+        background: #4CAF50;
+        color: white;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+
+<!-- Главный экран -->
+<div id="startScreen">
+    <h1>🪐 Добро пожаловать в "Собери рассказ"</h1>
+    <p>Собери космическое приключение из кусочков!</p>
+    <button onclick="startGame()">🚀 Начать игру</button>
+</div>
+
+<!-- Экран игры -->
+<div id="gameScreen">
+    <h1>🪐 Собери рассказ</h1>
+    <p>Перетащи предложения в правильном порядке.</p>
+
+    <div class="container" id="phrases">
+        <div class="block" draggable="true" data-order="2">Затем он увидел космический корабль.</div>
+        <div class="block" draggable="true" data-order="1">Однажды мальчик вышел ночью во двор.</div>
+        <div class="block" draggable="true" data-order="3">Он поднялся на борт и отправился в путешествие.</div>
+    </div>
+
+    <h2>Твой рассказ:</h2>
+    <div class="container" id="story">
+        <div class="dropzone"></div>
+        <div class="dropzone"></div>
+        <div class="dropzone"></div>
+    </div>
+
+    <button onclick="checkStory()">Проверить</button>
+    <button id="homeBtn" onclick="goHome()">🏠 На главный экран</button>
+</div>
+
+<script>
+let dragged;
+
+function startGame() {
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("gameScreen").style.display = "block";
+}
+
+function goHome() {
+    document.getElementById("gameScreen").style.display = "none";
+    document.getElementById("startScreen").style.display = "block";
+    document.getElementById("homeBtn").style.display = "none";
+}
+
+document.addEventListener("dragstart", (e) => {
+    if (e.target.classList.contains("block")) {
+        dragged = e.target;
+    }
+});
+
+document.addEventListener("dragover", (e) => e.preventDefault());
+
+document.addEventListener("drop", (e) => {
+    if (e.target.classList.contains("dropzone") || e.target.classList.contains("block")) {
+        e.preventDefault();
+        let dropTarget = e.target.classList.contains("block") ? e.target.parentNode : e.target;
+        if (dropTarget.classList.contains("dropzone")) {
+            if (!dropTarget.hasChildNodes()) {
+                dropTarget.appendChild(dragged);
+            } else {
+                // Меняем местами
+                let other = dropTarget.firstChild;
+                let parentOfDragged = dragged.parentNode;
+                dropTarget.appendChild(dragged);
+                if (parentOfDragged.classList.contains("dropzone")) {
+                    parentOfDragged.appendChild(other);
+                }
+            }
+        }
+    }
+});
+
+function checkStory() {
+    let zones = document.querySelectorAll(".dropzone");
+    let correct = true;
+
+    zones.forEach((zone, index) => {
+        if (zone.firstChild && zone.firstChild.getAttribute("data-order") != index + 1) {
+            correct = false;
+        }
+    });
+
+    if (correct) {
+        alert("✅ Отлично! Рассказ собран правильно!");
+        document.getElementById("homeBtn").style.display = "inline-block";
+    } else {
+        alert("❌ Порядок неправильный. Попробуй ещё раз!");
+    }
+}
+
+</script>
+
+</body>
+</html>

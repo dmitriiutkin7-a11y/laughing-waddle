@@ -1,75 +1,77 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>Учебная игра</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        background: #f0f8ff;
-        margin: 0;
-        padding: 0;
-    }
-    .container {
-        max-width: 500px;
-        margin: auto;
-        padding: 20px;
-    }
-    button {
-        padding: 10px 20px;
-        margin: 10px;
-        border: none;
-        border-radius: 8px;
-        background: #4caf50;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-    }
-    button:hover {
-        background: #45a049;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приключения в стране слов</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', sans-serif;
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #fff;
+            text-align: center;
+        }
+        .container {
+            max-width: 700px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        p {
+            margin-bottom: 25px;
+            font-size: 1.2em;
+        }
+        button {
+            font-size: 1em;
+            padding: 12px 20px;
+            margin: 8px;
+            background-color: #ff8c42;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            color: #fff;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #ff6b00;
+            transform: scale(1.05);
+        }
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h1>🌟 Приключения в стране слов 🌟</h1>
+        <p>Выбери игру и помоги герою!</p>
 
-<div class="container" id="menu">
-    <h1>Добро пожаловать!</h1>
-    <p>Выбери задание и начни игру</p>
-    <button onclick="startGame()">Начать игру</button>
-</div>
+        <button onclick="startGame('Словесный лабиринт')">Словесный лабиринт</button>
+        <button onclick="location.href='story.html'">📖 Собери рассказ</button>
+        <button onclick="location.href='ispravi-oshibki.html'">Исправь ошибки</button>
 
-<div class="container" id="game" style="display:none;">
-    <h2>Исправь ошибку</h2>
-    <p id="question">Я люблю кататься на лыжах летом.</p>
-    <button onclick="checkAnswer(true)">Зимой</button>
-    <button onclick="checkAnswer(false)">Летом</button>
-    <p id="result"></p>
-    <button onclick="backToMenu()">Вернуться в меню</button>
-</div>
 
-<script>
-function startGame() {
-    document.getElementById('menu').style.display = 'none';
-    document.getElementById('game').style.display = 'block';
+        <button onclick="location.href='echo.html'">Эхо-повтор 🎤</button>
+        <button onclick="location.href='sinon.html'">Синонимайзер</button>
+        <button onclick="location.href='reading.html'">Выразительное чтение 📖</button>
+    </div>
+
+    <script>
+        function startGame(gameName) {
+           if (gameName === "Словесный лабиринт") {
+    window.location.href = "labirint.html";
+} else {
+    alert("Скоро здесь будет игра: " + gameName + " 🚀");
 }
-
-function checkAnswer(isCorrect) {
-    let result = document.getElementById('result');
-    if (isCorrect) {
-        result.innerHTML = "✅ Верно! Молодец!";
-        result.style.color = "green";
-    } else {
-        result.innerHTML = "❌ Неправильно. Подумай ещё!";
-        result.style.color = "red";
-    }
-}
-
-function backToMenu() {
-    document.getElementById('game').style.display = 'none';
-    document.getElementById('menu').style.display = 'block';
-}
-</script>
-
+        }
+    </script>
 </body>
 </html>
